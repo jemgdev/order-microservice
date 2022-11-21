@@ -1,0 +1,81 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["referentialIntegrity"]
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Category {
+  categoryId   String @id @unique
+  categoryName String @unique @db.VarChar(255)
+}
+
+model Order {
+  orderId   String   @id @unique
+  orderDate DateTime @default(now())
+  state     String   @db.VarChar(255)
+}
+
+model Product {
+  productId    String   @id @unique
+  productName  String   @db.VarChar(255)
+  color        String   @db.VarChar(255)
+  price        Float
+  description  String   @db.VarChar(255)
+  primaryImg   String   @default("https://res.cloudinary.com/josueemg/image/upload/v1665374310/NikeContigo/default_product_img.jpg")
+  createdAt    DateTime @default(now())
+  categoryName String   @db.VarChar(255)
+}
+
+model ProductOrder {
+  productOrderId   String @id @unique
+  orderId          String
+  ProductOrderName String @db.VarChar(255)
+  color            String @db.VarChar(255)
+  price            Float
+  description      String @db.VarChar(255)
+  categoryName     String @db.VarChar(255)
+  primaryImg       String @default("https://res.cloudinary.com/josueemg/image/upload/v1665374310/NikeContigo/default_product_img.jpg")
+}
+
+model Review {
+  reviewId  String @id @unique
+  userId    String
+  productId String
+  comment   String @db.VarChar(255)
+  score     Int
+}
+
+model Size {
+  sizesId   String  @id @unique
+  productId String
+  size      Decimal @db.Decimal(3, 1)
+}
+
+model User {
+  userId      String    @id @unique
+  name        String    @db.VarChar(255)
+  lastname    String    @db.VarChar(255)
+  dni         Int
+  email       String    @db.VarChar(255)
+  password    String    @db.VarChar(255)
+  dateOfBirth DateTime? @db.Date
+  address     String?   @db.VarChar(255)
+  avatar      String?   @db.VarChar(255)
+  userType    String    @db.VarChar(255)
+}
+
+model Wish {
+  wishId    String @id @unique
+  productId String @unique
+  userId    String
+}
+
+model ProductImage {
+  productImageId String @id @unique
+  productId      String
+  url            String @db.VarChar(255)
+}
