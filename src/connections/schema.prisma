@@ -8,53 +8,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Category {
-  categoryId   String @id @unique
-  categoryName String @unique @db.VarChar(255)
-}
-
-model Order {
-  orderId   String   @id @unique
-  orderDate DateTime @default(now())
-  state     String   @db.VarChar(255)
-}
-
-model Product {
-  productId    String   @id @unique
-  productName  String   @db.VarChar(255)
-  color        String   @db.VarChar(255)
-  price        Float
-  description  String   @db.VarChar(255)
-  primaryImg   String   @default("https://res.cloudinary.com/josueemg/image/upload/v1665374310/NikeContigo/default_product_img.jpg")
-  createdAt    DateTime @default(now())
-  categoryName String   @db.VarChar(255)
-}
-
-model ProductOrder {
-  productOrderId   String @id @unique
-  orderId          String
-  ProductOrderName String @db.VarChar(255)
-  color            String @db.VarChar(255)
-  price            Float
-  description      String @db.VarChar(255)
-  categoryName     String @db.VarChar(255)
-  primaryImg       String @default("https://res.cloudinary.com/josueemg/image/upload/v1665374310/NikeContigo/default_product_img.jpg")
-}
-
-model Review {
-  reviewId  String @id @unique
-  userId    String
-  productId String
-  comment   String @db.VarChar(255)
-  score     Int
-}
-
-model Size {
-  sizesId   String  @id @unique
-  productId String
-  size      Decimal @db.Decimal(3, 1)
-}
-
 model User {
   userId      String    @id @unique
   name        String    @db.VarChar(255)
@@ -66,16 +19,82 @@ model User {
   address     String?   @db.VarChar(255)
   avatar      String?   @db.VarChar(255)
   userType    String    @db.VarChar(255)
+  reviews     Review[]
+  wishes      Wish[]
+  orders      Order[]
+}
+
+model Order {
+  orderId       String         @id @unique
+  orderDate     DateTime       @default(now())
+  state         String         @db.VarChar(255)
+  userId        String
+  productOrders ProductOrder[]
+  user          User           @relation(fields: [userId], references: [userId])
+}
+
+model Review {
+  reviewId  String  @id @unique
+  userId    String
+  productId String
+  comment   String  @db.VarChar(255)
+  score     Int
+  user      User    @relation(fields: [userId], references: [userId])
+  product   Product @relation(fields: [productId], references: [productId])
+}
+
+model Size {
+  sizesId   String  @id @unique
+  productId String
+  size      Decimal @db.Decimal(3, 1)
+  product   Product @relation(fields: [productId], references: [productId])
 }
 
 model Wish {
-  wishId    String @id @unique
-  productId String @unique
+  wishId    String  @id @unique
+  productId String  @unique
   userId    String
+  product   Product @relation(fields: [productId], references: [productId])
+  user      User    @relation(fields: [userId], references: [userId])
+}
+
+model ProductOrder {
+  productOrderId   String @id @unique
+  orderId          String
+  categoryName     String @db.VarChar(255)
+  color            String @db.VarChar(255)
+  price            Float
+  description      String @db.VarChar(255)
+  primaryImg       String @default("https://res.cloudinary.com/josueemg/image/upload/v1665374310/NikeContigo/default_product_img.jpg")
+  productOrderName String @db.VarChar(255)
+  quantity         Int
+  order            Order  @relation(fields: [orderId], references: [orderId])
+  size             String @db.VarChar(255)
+}
+
+model Product {
+  productId     String         @id @unique
+  productName   String         @db.VarChar(255)
+  categoryName  String         @db.VarChar(255)
+  color         String         @db.VarChar(255)
+  price         Float
+  description   String         @db.VarChar(255)
+  primaryImg    String         @default("https://res.cloudinary.com/josueemg/image/upload/v1665374310/NikeContigo/default_product_img.jpg")
+  createdAt     DateTime       @default(now())
+  reviews       Review[]
+  sizes         Size[]
+  wish          Wish?
+  productImages ProductImage[]
+}
+
+model Category {
+  categoryId   String @id @unique
+  categoryName String @unique @db.VarChar(255)
 }
 
 model ProductImage {
-  productImageId String @id @unique
+  productImageId String  @id @unique
   productId      String
-  url            String @db.VarChar(255)
+  url            String  @db.VarChar(255)
+  product        Product @relation(fields: [productId], references: [productId])
 }

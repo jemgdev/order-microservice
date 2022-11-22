@@ -2,11 +2,11 @@ import dotenv from 'dotenv'
 dotenv.config()
 import express from 'express'
 import morgan from 'morgan'
-import userController from './controllers/user.controller'
+import userController from './controllers/order.controller'
 import cors from 'cors'
 const app = express()
 
-app.set('PORT', process.env.PORT || 3003)
+app.set('PORT', process.env.PORT || 3005)
 
 app.use(express.json())
 app.use(morgan('dev'))
@@ -16,11 +16,11 @@ app.use(cors({
 
 app.get('/', (_req, res) => {
   res.status(200).json({
-    message: 'User microservice v.1'
+    message: 'Order microservice v.1'
   })
 })
 
-app.use('/api/users', userController)
+app.use('/api/v1/orders', userController)
 
 app.use((_req, res) => {
   res.status(404).json({
