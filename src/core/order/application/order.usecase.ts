@@ -11,4 +11,9 @@ export default class UserUseCase {
     const ordersFound = await this.orderRepository.getOrdersByUserId(userId)
     return ordersFound
   }
+
+  public async getListOfOrders () {
+    const ordersFound = await this.orderRepository.getOrders()
+    return ordersFound
+  }
 }

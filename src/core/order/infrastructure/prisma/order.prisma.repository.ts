@@ -16,7 +16,29 @@ export default class OrderPrismaRepository implements OrderRepository {
           select: {
             productOrderId: true,
             productOrderName: true,
-            price: true
+            price: true,
+            quantity: true
+          }
+        }
+      },
+      orderBy: {
+        orderDate: 'desc'
+      }
+    })
+  }
+
+  async getOrders(): Promise<OrderEntity[] | null> {
+    return await prisma.order.findMany({
+      select: {
+        orderId: true,
+        orderDate: true,
+        state: true,
+        productOrders: {
+          select: {
+            productOrderId: true,
+            productOrderName: true,
+            price: true,
+            quantity: true
           }
         }
       },

@@ -5,6 +5,16 @@ import OrderPrismaRepository from '../core/order/infrastructure/prisma/order.pri
 const orderRouter = Router()
 const orderUseCase = new OrderUseCase(new OrderPrismaRepository())
 
+orderRouter.get('/', async (request, response) => {
+  const orders = await orderUseCase.getListOfOrders()
+
+  response.status(200).json({
+    statusCode: 200,
+    message: 'Get orders successfully',
+    data: orders
+  })
+})
+
 orderRouter.get('/:userId', async (request, response) => {
   const { userId } = request.params
 

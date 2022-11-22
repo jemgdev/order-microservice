@@ -3,8 +3,9 @@ export default interface OrderEntity {
   orderDate: Date
   state: string
   productOrders: {
-    productOrderId: string,
-    productOrderName: string,
+    productOrderId: string
+    productOrderName: string
     price: number
+    quantity: number
   }[]
 }
