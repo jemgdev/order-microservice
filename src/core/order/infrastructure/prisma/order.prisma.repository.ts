@@ -21,7 +21,7 @@ export default class OrderPrismaRepository implements OrderRepository {
         }
       },
       orderBy: {
-        orderDate: 'asc'
+        orderDate: 'desc'
       }
     })
   }
