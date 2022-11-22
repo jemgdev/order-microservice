@@ -2,7 +2,7 @@ import dotenv from 'dotenv'
 dotenv.config()
 import express from 'express'
 import morgan from 'morgan'
-import userController from './controllers/order.controller'
+import orderController from './controllers/order.controller'
 import cors from 'cors'
 const app = express()
 
@@ -20,7 +20,7 @@ app.get('/', (_req, res) => {
   })
 })
 
-app.use('/api/v1/orders', userController)
+app.use('/api/v1/orders', orderController)
 
 app.use((_req, res) => {
   res.status(404).json({
