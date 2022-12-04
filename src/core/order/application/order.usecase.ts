@@ -16,4 +16,14 @@ export default class UserUseCase {
     const ordersFound = await this.orderRepository.getOrders()
     return ordersFound
   }
+
+  public async getOrderById (orderId: string) {
+    const orderFound = await this.orderRepository.getOrder(orderId)
+    return orderFound
+  }
+
+  public async updateOrder (orderId: string, state: string) {
+    const orderUpdated = await this.orderRepository.updateOrderStatus(orderId, state)
+    return orderUpdated
+  }
 }

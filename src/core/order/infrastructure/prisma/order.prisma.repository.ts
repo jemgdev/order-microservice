@@ -47,4 +47,49 @@ export default class OrderPrismaRepository implements OrderRepository {
       }
     })
   }
+
+  async getOrder(orderId: string): Promise<OrderEntity> {
+    return await prisma.order.findUnique({
+      where: {
+        orderId
+      },
+      select: {
+        orderId: true,
+        orderDate: true,
+        state: true,
+        productOrders: {
+          select: {
+            productOrderId: true,
+            productOrderName: true,
+            price: true,
+            quantity: true
+          }
+        }
+      }
+    })
+  }
+
+  async updateOrderStatus (orderId: string, state: string): Promise<OrderEntity> {
+    return await prisma.order.update({
+      where: {
+        orderId
+      },
+      data: {
+        state
+      },
+      select: {
+        orderId: true,
+        orderDate: true,
+        state: true,
+        productOrders: {
+          select: {
+            productOrderId: true,
+            productOrderName: true,
+            price: true,
+            quantity: true
+          }
+        }
+      }
+    })
+  }
 }

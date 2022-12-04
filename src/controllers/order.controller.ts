@@ -27,5 +27,30 @@ orderRouter.get('/:userId', async (request, response) => {
   })
 })
 
+orderRouter.get('/order/:orderId', async (request, response) => {
+  const { orderId } = request.params
+
+  const order = await orderUseCase.getOrderById(orderId)
+
+  response.status(200).json({
+    statusCode: 200,
+    message: 'Get order successfully',
+    data: order
+  })
+})
+
+orderRouter.put('/:orderId', async (request, response) => {
+  const { orderId } = request.params
+  const { state } = request.body
+
+  const orderUpdated = await orderUseCase.updateOrder(orderId, state)
+
+  response.status(200).json({
+    statusCode: 200,
+    message: 'Status of order updated successfully',
+    data: orderUpdated
+  })
+})
+
 
 export default orderRouter
