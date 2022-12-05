@@ -1,6 +1,7 @@
 import OrderRepository from '../../domain/order.repository'
 import prisma from '../../../../connections/prisma.connection'
 import OrderEntity from '../../domain/order.entity'
+import axios from 'axios'
 
 export default class OrderPrismaRepository implements OrderRepository {
   async getOrdersByUserId(userId: string): Promise<OrderEntity[] | null> {
@@ -24,6 +25,38 @@ export default class OrderPrismaRepository implements OrderRepository {
       orderBy: {
         orderDate: 'desc'
       }
+    })
+  }
+
+  async stats(): Promise<{ productName: string, quantity: number }[]> {
+    const stast = await prisma.productOrder.groupBy({
+      by: ['productOrderName'],
+      _sum: {
+        quantity: true
+      },
+      orderBy: {
+        productOrderName: 'desc'
+      }
+    })
+
+    return stast.map(ca => {
+      return { productName: ca.productOrderName, quantity: ca._sum.quantity }
+    })
+  }
+
+  async stats1(): Promise<{ productName: string, price: number }[]> {
+    const stast = await prisma.productOrder.groupBy({
+      by: ['productOrderName'],
+      _sum: {
+        price: true
+      },
+      orderBy: {
+        productOrderName: 'desc'
+      }
+    })
+
+    return stast.map(ca => {
+      return { productName: ca.productOrderName, price: ca._sum.price }
     })
   }
 

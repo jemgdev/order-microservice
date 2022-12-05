@@ -52,5 +52,14 @@ orderRouter.put('/:orderId', async (request, response) => {
   })
 })
 
+orderRouter.get('/stats/stast', async (request, response) => {
+  const stats = await orderUseCase.getStats()
+  response.status(200).json({
+    statusCode: 200,
+    message: 'Stats of order get successfully',
+    data: stats
+  })
+})
+
 
 export default orderRouter

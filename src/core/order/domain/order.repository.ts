@@ -5,4 +5,6 @@ export default interface OrderRepository {
   getOrders(): Promise<OrderEntity[] | null>
   getOrder(orderId: string): Promise<OrderEntity | null>
   updateOrderStatus(orderId: string, state: string): Promise<OrderEntity | null>
+  stats(): Promise<{ productName: string, quantity: number }[]>
+  stats1(): Promise<{ productName: string, price: number }[]>
 }
