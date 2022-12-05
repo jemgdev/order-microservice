@@ -36,7 +36,8 @@ export default class OrderPrismaRepository implements OrderRepository {
       },
       orderBy: {
         productOrderName: 'desc'
-      }
+      },
+      take: 5
     })
 
     return stast.map(ca => {
@@ -52,7 +53,8 @@ export default class OrderPrismaRepository implements OrderRepository {
       },
       orderBy: {
         productOrderName: 'desc'
-      }
+      },
+      take: 5
     })
 
     return stast.map(ca => {
